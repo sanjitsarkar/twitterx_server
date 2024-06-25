@@ -37,7 +37,7 @@ npm install
 Create a `.env` file in the root directory and add the following variables:
 
 ```plaintext
-PORT=3000
+PORT=8000
 MONGODB_URI=<your_mongodb_uri>
 ```
 
