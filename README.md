@@ -44,7 +44,7 @@ MONGODB_URI=<your_mongodb_uri>
 4. **Start the server:**
 
 ```bash
-npm start
+npm run dev
 ```
 
 The server will start running on [http://localhost:8000](http://localhost:8000).
