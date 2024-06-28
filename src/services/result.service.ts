@@ -34,14 +34,10 @@ class ResultService {
     }
     return null;
   }
-  findCapturingCop(cops: ICop[], cities: ICity[], vehicles: IVehicle[]) {
+  findCapturingCop(fugitiveCity: ICity, cops: ICop[], cities: ICity[], vehicles: IVehicle[]) {
     let capturingCop = null;
-    let fugitiveCity = null;
     for (const cop of cops) {
       const copCity = cities.find((city: ICity) => String(city._id) === cop.selectedCityId);
-      if (!fugitiveCity) {
-        fugitiveCity = copCity;
-      }
       const fugitiveCityDistanceFromCopCity = Math.abs(fugitiveCity.distance + copCity.distance);
       const copVehicle = vehicles.find((vehicle: IVehicle) => String(vehicle._id) === cop.selectedVehicleId);
       if (copCity._id === fugitiveCity._id || copVehicle.range >= (2 * fugitiveCityDistanceFromCopCity)) {
@@ -61,6 +57,7 @@ class ResultService {
       const cities = await cityService.getCities();
       const vehicles = await vehicleService.getVehicles();
       const fugitiveCity = cities[Math.floor(Math.random() * cities.length)]
+
       const validateCitiesResult = this.validateCities(cops);
       if (validateCitiesResult) {
         throw new Error(validateCitiesResult.result);
@@ -72,7 +69,7 @@ class ResultService {
 
       }
 
-      const capturingCop = this.findCapturingCop(cops, cities, vehicles);
+      const capturingCop = this.findCapturingCop(fugitiveCity, cops, cities, vehicles);
       return {
         capturingCop: {
           name: capturingCop.name, selectedCity: cities.find(each => String(each._id) === capturingCop.selectedCityId).name, selectedVehicle: vehicles.find((each) => String(each._id) === capturingCop.selectedVehicleId).kind
