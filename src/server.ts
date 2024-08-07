@@ -1,10 +1,10 @@
-import { connectMongoDB } from "./config/db";
 
 import cors from 'cors';
-import express, { Request, Response } from 'express';
-import citiesRoute from './routes/cities.routes';
-import vehiclesRoute from './routes/vehicles.routes';
-import resultRoute from './routes/result.routes';
+import express from 'express';
+import knex from './config/knex';
+import followRoutes from './routes/follow.routes';
+import tweetRoutes from './routes/tweet.routes';
+import userRoutes from './routes/user.routes';
 
 
 const app = express();
@@ -15,18 +15,24 @@ app.use(cors({
   origin: '*',
 }));
 
-app.get('/', (_: Request, res: Response) => {
-  res.send('Welcome to Yocket API');
+const PORT = process.env.PORT || 8080;
+
+app.use('/api/users', userRoutes);
+app.use('/api/tweets', tweetRoutes);
+app.use('/api/follow', followRoutes);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+//knex.once connected
+knex.raw('SELECT 1+1 as result').then(() => {
+  console.log('Knex is connected');
+}).catch((err) => {
+  console.log(err);
+  process.exit(1);
 });
 
 
 
-app.use('/api/cities', citiesRoute);
-app.use('/api/vehicles', vehiclesRoute);
-app.use('/api/result', resultRoute);
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, async () => {
-  console.log(`Server running on port ${PORT}`)
-  await connectMongoDB()
-});

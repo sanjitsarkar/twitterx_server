@@ -1,19 +1,27 @@
-import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import User from '../models/User.model';
+import { NextFunction, Request, Response } from 'express';
 import { ENV } from '../config/env.cofig';
 
-const auth = (req: any, res: Response, next: NextFunction) => {
-  const token = req.headers['x-auth-token'];
-  if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
+export default async (req: Request, res: Response, next: NextFunction) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
   try {
-    const decoded = jwt.verify(token, ENV.JWT_SECRET); // Use a proper secret key
-    req["user"] = decoded["user"] as string;
+    const decoded = jwt.verify(token, ENV.JWT_SECRET);
+    if (!decoded) {
+      throw new Error("Invalid token");
+    }
+
+    const user = await User.query().findById(decoded["id"]);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    req["user"] = user;
+    req["token"] = token;
     next();
-  } catch (err) {
-
-
-    res.status(401).json({ msg: 'Token is not valid' });
+  } catch (e) {
+    res.status(401).json({ message: 'Unauthorized' });
   }
 };
-
-export default auth;
