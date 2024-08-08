@@ -21,7 +21,7 @@ export const usersResponseSchema = Joi.object({
   pageNumber: Joi.number().integer().optional(),
   searchQuery: Joi.string().allow("").optional(),
   sortBy: Joi.string().valid('date').optional(),
-  orderBy: Joi.string().valid("asc", "desc").optional()
+  orderBy: Joi.string().valid("oldest", "latest").optional()
 });
 
 

@@ -7,7 +7,7 @@ import { followersOrFollowingsSchema, followSchema } from '../validators/follow'
 const router = Router();
 
 // Follow user route
-router.post('/', validateRequest(followSchema), auth, addFollow);
+router.post('/:userId', auth, addFollow);
 
 // Get followers route
 router.get('/followers/:userId', validateRequest(followersOrFollowingsSchema), getFollowers);

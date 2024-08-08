@@ -1,9 +1,8 @@
-import { match } from 'assert';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { ENV } from '../config/env.cofig';
 import UserRepository from '../respositories/user.repository';
 import { IUser, IUsersResponse } from '../types/user.types';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
 class UserService {
   constructor(private readonly _userRepository: UserRepository) { }
@@ -56,7 +55,6 @@ class UserService {
     try {
       return await this._userRepository.updateUser(id, user);
     } catch (e) {
-      console.log({ e })
       throw new Error('Error updating user');
     }
   }

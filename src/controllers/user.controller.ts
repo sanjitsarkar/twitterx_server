@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import UserService from '../services/user.service';
 
-export const getUsers = async (req: Request, res: Response) => {
+export const getUsers = async (req: any, res: Response) => {
   try {
-    const { page = 1, searchKey = '', orderBy = "asc", sortBy = "date" } = req.query;
-    const users = await UserService.getUsers({ limit: 10, pageNumber: Number(page), searchQuery: String(searchKey), orderBy: String(orderBy), sortBy: String(sortBy) });
+    const { page = 1, searchKey = '', orderBy = "latest", sortBy = "date" } = req.query;
+    const userId = req.user.id;
+    const users = await UserService.getUsers({ limit: 10, pageNumber: Number(page), searchQuery: String(searchKey), orderBy: String(orderBy), sortBy: String(sortBy), userId });
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });

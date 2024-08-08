@@ -23,7 +23,7 @@ class FollowRepository {
             .orWhere('email', 'ilike', `%${searchQuery}%`);
         }
       })
-      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "asc" ? "ASC" : "DESC")
+      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "oldest" ? "ASC" : "DESC")
       .offset(offset)
       .limit(limit);
   }
@@ -44,7 +44,7 @@ class FollowRepository {
             .orWhere('email', 'ilike', `%${searchQuery}%`);
         }
       })
-      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "asc" ? "ASC" : "DESC")
+      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "oldest" ? "ASC" : "DESC")
       .offset(offset)
       .limit(limit);
   }

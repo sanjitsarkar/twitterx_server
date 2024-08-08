@@ -3,9 +3,9 @@ import FollowService from '../services/follow.service';
 
 export const addFollow = async (req: any, res: Response) => {
   try {
-    const { followingId } = req.body;
+    const { userId } = req.params;
     const followerId = req.user.id;
-    await FollowService.addFollow({ follower_id: Number(followerId), following_id: Number(followingId) });
+    await FollowService.addFollow({ follower_id: Number(followerId), following_id: Number(userId) });
     res.status(201).json({ message: "Followed successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -15,7 +15,7 @@ export const addFollow = async (req: any, res: Response) => {
 export const getFollowers = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { page = 1, searchKey = '', orderBy = "asc", sortBy = "date" } = req.query;
+    const { page = 1, searchKey = '', orderBy = "latest", sortBy = "date" } = req.query;
     const followers = await FollowService.getFollowers({ userId: Number(userId), limit: 10, pageNumber: Number(page), searchQuery: String(searchKey), orderBy: String(orderBy), sortBy: String(sortBy) });
     res.status(200).json(followers);
   } catch (error) {
@@ -26,7 +26,7 @@ export const getFollowers = async (req: Request, res: Response) => {
 export const getFollowing = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { page = 1, searchKey = '', sortBy = 'date', orderBy = 'asc' } = req.query;
+    const { page = 1, searchKey = '', sortBy = 'date', orderBy = "latest" } = req.query;
     const following = await FollowService.getFollowing({ userId: Number(userId), limit: 10, pageNumber: Number(page), searchQuery: String(searchKey), orderBy: String(orderBy), sortBy: String(sortBy) });
     res.status(200).json(following);
   } catch (error) {

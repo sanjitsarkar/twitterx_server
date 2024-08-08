@@ -16,7 +16,7 @@ class TweetRepository {
           builder.where('content', 'ilike', `%${searchQuery}%`);
         }
       })
-      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "asc" ? "ASC" : "DESC")
+      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "oldest" ? "ASC" : "DESC")
       .limit(limit)
       .offset(offset);
 
@@ -55,7 +55,7 @@ class TweetRepository {
           builder.where('content', 'ilike', `%${searchQuery}%`);
         }
       })
-      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "asc" ? "ASC" : "DESC")
+      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "oldest" ? "ASC" : "DESC")
       .limit(limit)
       .offset(offset);
     ;

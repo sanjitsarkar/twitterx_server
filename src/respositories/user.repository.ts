@@ -4,25 +4,50 @@ import { IUser, IUsersResponse } from '../types/user.types';
 
 class UserRepository {
   async getUsers(params: IUsersResponse) {
-    const { pageNumber, limit, searchQuery, orderBy, sortBy } = params;
+    const { pageNumber, limit, searchQuery, orderBy, sortBy, userId } = params;
     const offset = (pageNumber - 1) * limit;
 
     const users = User.query()
       .modify(builder => {
-        builder.select('id', 'firstName', 'lastName', 'email', 'created_at', 'updated_at');
+        builder.select(
+          'users.id',
+          'users.firstName',
+          'users.lastName',
+          'users.email',
+          'users.created_at',
+          'users.updated_at'
+        );
         if (searchQuery) {
-          builder.where('firstName', 'ilike', `%${searchQuery}%`)
-            .orWhere('lastName', 'ilike', `%${searchQuery}%`)
-            .orWhere('email', 'ilike', `%${searchQuery}%`);
+          builder.where('users.firstName', 'ilike', `%${searchQuery}%`)
+            .orWhere('users.lastName', 'ilike', `%${searchQuery}%`)
+            .orWhere('users.email', 'ilike', `%${searchQuery}%`);
         }
       })
-      .where({ is_active: true })
-      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "asc" ? "ASC" : "DESC")
+      .leftJoin('follows', 'users.id', 'follows.following_id')
+      .leftJoin('follows AS f', 'users.id', 'f.follower_id')
+      .select(
+        'users.id',
+        'users.firstName',
+        'users.lastName',
+        'users.email',
+        'users.created_at',
+        'users.updated_at',
+        raw(`CAST((SELECT COUNT(*) FROM follows WHERE follows.follower_id = users.id) AS INTEGER) AS "followersCount"`),
+        raw(`CAST((SELECT COUNT(*) FROM follows WHERE follows.following_id = users.id) AS INTEGER) AS "followingCount"`),
+        raw(`EXISTS (SELECT 1 FROM follows WHERE follows.follower_id = ${userId} AND follows.following_id = users.id) AS "isFollower"`),
+        raw(`EXISTS (SELECT 1 FROM follows WHERE follows.following_id = ${userId} AND follows.follower_id = users.id) AS "isFollowing"`)
+      )
+      .where({ 'users.is_active': true })
+      .whereNot({ 'users.id': userId })
+      .groupBy('users.id')
+      .orderBy(sortBy === "date" ? "users.created_at" : "users.updated_at", orderBy === "oldest" ? "ASC" : "DESC")
       .limit(limit)
       .offset(offset);
 
     return users;
   }
+
+
 
   async addUser(user: IUser) {
     return User.query().insert(user);
