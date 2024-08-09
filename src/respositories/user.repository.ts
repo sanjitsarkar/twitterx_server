@@ -32,10 +32,10 @@ class UserRepository {
         'users.email',
         'users.created_at',
         'users.updated_at',
-        raw(`CAST((SELECT COUNT(*) FROM follows WHERE follows.follower_id = users.id) AS INTEGER) AS "followersCount"`),
-        raw(`CAST((SELECT COUNT(*) FROM follows WHERE follows.following_id = users.id) AS INTEGER) AS "followingCount"`),
-        raw(`EXISTS (SELECT 1 FROM follows WHERE follows.follower_id = ${userId} AND follows.following_id = users.id) AS "isFollower"`),
-        raw(`EXISTS (SELECT 1 FROM follows WHERE follows.following_id = ${userId} AND follows.follower_id = users.id) AS "isFollowing"`)
+        raw(`CAST((SELECT COUNT(*) FROM follows WHERE follows.follower_id = users.id AND follows.is_active = true) AS INTEGER) AS "followersCount"`),
+        raw(`CAST((SELECT COUNT(*) FROM follows WHERE follows.following_id = users.id AND follows.is_active = true) AS INTEGER) AS "followingCount"`),
+        raw(`EXISTS (SELECT 1 FROM follows WHERE follows.follower_id = ${userId} AND follows.following_id = users.id AND follows.is_active = true) AS "isFollower"`),
+        raw(`EXISTS (SELECT 1 FROM follows WHERE follows.following_id = ${userId} AND follows.follower_id = users.id  AND follows.is_active = true) AS "isFollowing"`)
       )
       .where({ 'users.is_active': true })
       .whereNot({ 'users.id': userId })

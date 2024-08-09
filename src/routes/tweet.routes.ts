@@ -12,7 +12,7 @@ router.get('/user/:userId', validateRequest(userTweetsResponseSchema), getTweets
 router.post('/', validateRequest(tweetSchema), auth, addTweet);
 
 // Get all tweets route
-router.get('/', validateRequest(tweetResponseSchema), getTweets);
+router.get('/', validateRequest(tweetResponseSchema), auth, getTweets);
 
 
 //Update tweet route

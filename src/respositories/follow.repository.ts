@@ -31,7 +31,6 @@ class FollowRepository {
   async getFollowings(params: IFollowersOrFollowingsResponse) {
     const { limit, pageNumber, searchQuery, userId, orderBy, sortBy } = params;
     const offset = (pageNumber - 1) * limit;
-    console.log({ userId, searchQuery, limit, pageNumber, orderBy, sortBy });
 
     return Follow.query()
       .where({ follower_id: userId, is_active: true })

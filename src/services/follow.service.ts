@@ -31,7 +31,7 @@ class FollowService {
         throw new Error('You cannot follow yourself');
       }
       const isFollowing = await this._followRepository.getFollow(follow.follower_id, follow.following_id);
-      if (isFollowing["is_active"]) {
+      if (isFollowing?.["is_active"]) {
         throw new Error('You are already following this user');
       }
       const follower = await this.checkIfUserExists(follow.follower_id);
