@@ -11,6 +11,7 @@ export interface IUserTweetsResponse extends ITweetResponse {
   userId: number
 }
 export interface ITweetResponse {
-  pageNumber: number, limit: number, searchQuery: string,
+  pageNumber?: number, limit: number, searchQuery: string,
   sortBy?: string, orderBy?: string
+  userId?: number
 }

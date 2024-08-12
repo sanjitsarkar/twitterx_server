@@ -40,9 +40,12 @@ class UserRepository {
       .where({ 'users.is_active': true })
       .whereNot({ 'users.id': userId })
       .groupBy('users.id')
-      .orderBy(sortBy === "date" ? "users.created_at" : "users.updated_at", orderBy === "oldest" ? "ASC" : "DESC")
-      .limit(limit)
-      .offset(offset);
+      .orderBy(sortBy === "date" ? "users.created_at" : "users.updated_at", orderBy === "oldest" ? "ASC" : "DESC");
+
+    if (pageNumber) {
+      users.limit(limit)
+        .offset(offset);
+    }
 
     return users;
   }
@@ -73,8 +76,8 @@ class UserRepository {
         'users.lastName',
         'users.created_at',
         'users.updated_at',
-        raw(`(SELECT COUNT(*) FROM follows WHERE follows.follower_id = users.id) AS "followersCount"`),
-        raw(`(SELECT COUNT(*) FROM follows WHERE follows.following_id = users.id) AS "followingCount"`)
+        raw(`(SELECT COUNT(*) FROM follows WHERE follows.follower_id = users.id AND follows.is_active = true) AS "followersCount"`),
+        raw(`(SELECT COUNT(*) FROM follows WHERE follows.following_id = users.id AND follows.is_active = true) AS "followingCount"`)
       )
       .where({ 'users.id': id, 'users.is_active': true })
       .first();

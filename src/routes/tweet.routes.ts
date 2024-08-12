@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { addTweet, deleteTweet, getTweets, getTweetsByUser, updateTweet } from '../controllers/tweet.controller';
+import { addTweet, deleteTweet, getTweetsByUser, updateTweet, getFollowingsTweets, getAllTweets } from '../controllers/tweet.controller';
 import auth from '../middlewares/auth';
 import validateRequest from '../middlewares/validation';
 import { tweetResponseSchema, tweetSchema, tweetUpdateSchema, userTweetsResponseSchema } from '../validators/tweet';
@@ -7,12 +7,13 @@ import { tweetResponseSchema, tweetSchema, tweetUpdateSchema, userTweetsResponse
 const router = Router();
 
 // Get tweets for a specific user
-router.get('/user/:userId', validateRequest(userTweetsResponseSchema), getTweetsByUser);
+router.get('/user/:userId', validateRequest(userTweetsResponseSchema), auth, getTweetsByUser);
 // Create tweet route
 router.post('/', validateRequest(tweetSchema), auth, addTweet);
 
 // Get all tweets route
-router.get('/', validateRequest(tweetResponseSchema), auth, getTweets);
+router.get('/all', validateRequest(tweetResponseSchema), auth, getAllTweets);
+router.get('/', validateRequest(tweetResponseSchema), auth, getFollowingsTweets);
 
 
 //Update tweet route

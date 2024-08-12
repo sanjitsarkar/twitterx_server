@@ -49,7 +49,9 @@ class FollowService {
 
   async getFollowers(params: IFollowersOrFollowingsResponse) {
     try {
-      return await this._followRepository.getFollowers(params);
+      const results = await this._followRepository.getFollowers(params);
+      const filteredResults = results.filter(result => result["follower"]);
+      return filteredResults;
     } catch (e) {
       throw new Error('Error fetching followers');
     }
@@ -57,7 +59,11 @@ class FollowService {
 
   async getFollowing(params: IFollowersOrFollowingsResponse) {
     try {
-      return await this._followRepository.getFollowings(params);
+      const results = await this._followRepository.getFollowings(params);
+
+      const filteredResults = results.filter(result => result["following"]);
+
+      return filteredResults;
     } catch (e) {
       throw new Error('Error fetching following');
     }

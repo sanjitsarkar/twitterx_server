@@ -1,10 +1,20 @@
 import { Request, Response } from 'express';
 import TweetService from '../services/tweet.service';
 
-export const getTweets = async (req: Request, res: Response) => {
+export const getAllTweets = async (req: Request, res: Response) => {
   try {
-    const { page = 1, searchKey = '', sortBy = "date", orderBy = "desc" } = req.query;
-    const tweets = await TweetService.getTweets({ limit: 10, pageNumber: Number(page), searchQuery: String(searchKey), orderBy: String(orderBy), sortBy: String(sortBy) });
+    const { page, searchKey = '', sortBy = "date", orderBy = "desc" } = req.query;
+    const tweets = await TweetService.getAllTweets({ limit: 10, pageNumber: Number(page), searchQuery: String(searchKey), orderBy: String(orderBy), sortBy: String(sortBy) });
+    res.status(200).json(tweets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const getFollowingsTweets = async (req: any, res: Response) => {
+  try {
+    const { page, searchKey = '', sortBy = "date", orderBy = "desc" } = req.query;
+    const userId = req.user.id;
+    const tweets = await TweetService.getFollowingsTweets({ limit: 10, pageNumber: Number(page), searchQuery: String(searchKey), orderBy: String(orderBy), sortBy: String(sortBy), userId });
     res.status(200).json(tweets);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -56,7 +66,7 @@ export const getTweet = async (req: Request, res: Response) => {
 export const getTweetsByUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { page = 1, searchKey = '', sortBy = "date", orderBy = "desc" } = req.query;
+    const { page, searchKey = '', sortBy = "date", orderBy = "desc" } = req.query;
     const tweets = await TweetService.getTweetsByUser({ userId: Number(userId), limit: 10, pageNumber: Number(page), searchQuery: String(searchKey), orderBy: String(orderBy), sortBy: String(sortBy) });
     res.status(200).json(tweets);
   } catch (error) {

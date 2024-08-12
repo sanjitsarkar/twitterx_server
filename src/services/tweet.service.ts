@@ -4,9 +4,16 @@ import { ITweet, ITweetResponse, IUserTweetsResponse } from '../types/tweet.type
 class TweetService {
   constructor(private readonly _tweetRepository: TweetRepository) { }
 
-  async getTweets(params: ITweetResponse) {
+  async getAllTweets(params: ITweetResponse) {
     try {
-      return await this._tweetRepository.getTweets(params);
+      return await this._tweetRepository.getAllTweets(params);
+    } catch (e) {
+      throw new Error('Error fetching tweets');
+    }
+  }
+  async getFollowingsTweets(params: ITweetResponse) {
+    try {
+      return await this._tweetRepository.getFollowingsTweets(params);
     } catch (e) {
       throw new Error('Error fetching tweets');
     }

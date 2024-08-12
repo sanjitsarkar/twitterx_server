@@ -12,7 +12,7 @@ class FollowRepository {
     const { limit, pageNumber, searchQuery, userId, orderBy, sortBy } = params;
     const offset = (pageNumber - 1) * limit;
 
-    return Follow.query()
+    let query = Follow.query()
       .where({ following_id: userId, is_active: true })
       .withGraphFetched('follower')
       .modifyGraph('follower', builder => {
@@ -23,16 +23,20 @@ class FollowRepository {
             .orWhere('email', 'ilike', `%${searchQuery}%`);
         }
       })
-      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "oldest" ? "ASC" : "DESC")
-      .offset(offset)
-      .limit(limit);
+      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "oldest" ? "ASC" : "DESC");
+
+    if (pageNumber) {
+      query = query.offset(offset).limit(limit);
+    }
+
+    return query;
   }
 
   async getFollowings(params: IFollowersOrFollowingsResponse) {
     const { limit, pageNumber, searchQuery, userId, orderBy, sortBy } = params;
     const offset = (pageNumber - 1) * limit;
 
-    return Follow.query()
+    let query = Follow.query()
       .where({ follower_id: userId, is_active: true })
       .withGraphFetched('following')
       .modifyGraph('following', builder => {
@@ -43,9 +47,13 @@ class FollowRepository {
             .orWhere('email', 'ilike', `%${searchQuery}%`);
         }
       })
-      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "oldest" ? "ASC" : "DESC")
-      .offset(offset)
-      .limit(limit);
+      .orderBy(sortBy === "date" ? "created_at" : "updated_at", orderBy === "oldest" ? "ASC" : "DESC");
+
+    if (pageNumber) {
+      query = query.offset(offset).limit(limit);
+    }
+
+    return query;
   }
 
 

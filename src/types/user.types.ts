@@ -11,6 +11,6 @@ export interface IUser {
 
 export interface IUsersResponse {
   userId: number,
-  pageNumber: number, limit: number, searchQuery: string,
+  pageNumber?: number, limit: number, searchQuery: string,
   sortBy?: string, orderBy?: string
 }
