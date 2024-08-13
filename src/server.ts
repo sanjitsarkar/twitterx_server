@@ -21,11 +21,15 @@ app.use('/api/users', userRoutes);
 app.use('/api/tweets', tweetRoutes);
 app.use('/api/follow', followRoutes);
 
+app.get('/', (req, res) => {
+  res.send('Welcome to Twitter Clone API');
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-//knex.once connected
 knex.raw('SELECT 1+1 as result').then(() => {
   console.log('Knex is connected');
 }).catch((err) => {

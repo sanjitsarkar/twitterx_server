@@ -1,75 +1,46 @@
-# Fugitive Capture Game - Backend
+# TwitterX Server
 
-This project is part of a fugitive capture game where players select cities and vehicles for cops to capture a fugitive. It includes a backend built with Node.js, Express, and other technologies.
+Welcome to the TwitterX Server project! This repository contains the server-side code for the TwitterX application.
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Introduction
+
+TwitterX Server is a backend application that powers the TwitterX social media platform. It provides the necessary APIs and functionalities to handle user authentication, tweet management, and more.
 
 ## Features
 
-- Handle requests to select cities and vehicles for each cop.
-- Process and store selections to capture the fugitive.
-- Provide the result of the capture operation.
+- User authentication and authorization
+- Creating, searching of tweets
+- Searching of users
+- Viewing user's profile
+- Viewing followers and following of an user
+- Follow and unfollow other users
 
-## Technologies Used
+## Installation
 
-- Node.js
-- Express for handling HTTP requests
-- MongoDB for data storage
-- Mongoose for MongoDB object modeling
+To install and run the TwitterX Server, follow these steps:
 
-## Getting Started
+1. Clone this repository: `git clone https://github.com/sanjitsarkar/twitterx_server`
+2. Install the required dependencies: `yarn install`
+3. Set up the database connection in the `knexfile.ts` file
+4. Start the server: `yarn dev`
 
-To get a local copy up and running, follow these steps:
+## Usage
 
-1. **Clone the repository:**
-
-```bash
-git clone https://github.com/sanjitsarkar/yocket_backend
-cd yocket_backend
-```
-
-2. **Install dependencies:**
-
-```bash
-npm install
-```
-
-3. **Set up environment variables:**
-
-Create a `.env` file in the root directory and add the following variables:
-
-```plaintext
-PORT=8000
-MONGODB_URI=<your_mongodb_uri>
-```
-
-4. **Start the server:**
-
-```bash
-npm run dev
-```
-
-The server will start running on [http://localhost:8000](http://localhost:8000).
-
-## Folder Structure
-
-- `src/`: Contains all source code for the backend.
-  - `controllers/`: Handles the business logic of the application.
-  - `models/`: Defines the data models for MongoDB.
-  - `routes/`: Defines the API routes.
-  - `middlewares/`: Contains custom middleware functions.
-  - `config/`: Contains configuration files.
-  - `services/`: Contains services for the application.
-  - `repositories/`: Contains repositories for data access.
-  - `types/`: Contains type definitions.
-  - `server.ts`: Entry point of the application.
+Once the server is up and running, you can start making API requests to interact with the TwitterX platform. Refer to the API documentation for detailed information on the available endpoints and request/response formats.
 
 ## Contributing
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/YourFeature`).
-3. Commit your changes (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature/YourFeature`).
-5. Create a new Pull Request.
+We welcome contributions from the community! If you'd like to contribute to the TwitterX Server project, please follow our [contribution guidelines](CONTRIBUTING.md).
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+This project is licensed under the [MIT License](LICENSE).
