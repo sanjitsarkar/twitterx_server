@@ -42,7 +42,7 @@ class UserRepository {
       .groupBy('users.id')
       .orderBy(sortBy === "date" ? "users.created_at" : "users.updated_at", orderBy === "oldest" ? "ASC" : "DESC");
 
-    if (pageNumber) {
+    if (!pageNumber) {
       users.limit(limit)
         .offset(offset);
     }

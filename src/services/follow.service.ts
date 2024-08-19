@@ -39,7 +39,8 @@ class FollowService {
         throw new Error('Follower does not exist');
       }
       if (isFollowing) {
-        return await this._followRepository.updateFollow({ ...follow, is_active: true });
+        await this._followRepository.updateFollow({ ...follow, is_active: true });
+        return { ...isFollowing, is_active: true };
       }
       return await this._followRepository.addFollow(follow);
     } catch (e) {

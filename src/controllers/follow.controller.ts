@@ -5,8 +5,8 @@ export const addFollow = async (req: any, res: Response) => {
   try {
     const { userId } = req.params;
     const followerId = req.user.id;
-    await FollowService.addFollow({ follower_id: Number(followerId), following_id: Number(userId) });
-    res.status(201).json({ message: "Followed successfully" });
+    const follower = await FollowService.addFollow({ follower_id: Number(followerId), following_id: Number(userId) });
+    res.status(201).json(follower);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
